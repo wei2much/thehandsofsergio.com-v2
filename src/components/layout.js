@@ -6,12 +6,10 @@
  */
 
 import React from "react"
-import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
-
-import Header from "./header"
-import "./layout.css"
-
+import { Global } from "@emotion/core"
+import { globalStyles } from "../styles/global"
+import styled from "@emotion/styled"
 const Layout = ({ children }) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
@@ -24,28 +22,20 @@ const Layout = ({ children }) => {
   `)
 
   return (
-    <>
-      <Header siteTitle={data.site.siteMetadata.title} />
-      <div
-        style={{
-          margin: `0 auto`,
-          maxWidth: 960,
-          padding: `0 1.0875rem 1.45rem`,
-        }}
-      >
+    <Container>
+      <Global styles={globalStyles} />
+      <div>
         <main>{children}</main>
-        <footer>
-          © {new Date().getFullYear()}, Built with
-          {` `}
-          <a href="https://www.gatsbyjs.org">Gatsby</a>
-        </footer>
       </div>
-    </>
+    </Container>
   )
 }
 
-Layout.propTypes = {
-  children: PropTypes.node.isRequired,
-}
+const Container = styled.div`
+  position: relative;
+  background: ${p => p.theme.colors.background};
+  transition: ${p => p.theme.colorModeTransition};
+  min-height: 100vh;
+`
 
 export default Layout
